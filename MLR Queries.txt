@@ -1,0 +1,208 @@
+select * from PS_TSE_PC_LINE_FLD WHERE TSE_PROC_INSTANCE ='76003'
+
+
+select distinct message_parm , message_parm2 , message_parm3 from ps_TSE_PC_LINE_FLD where tse_proc_instance = '76003';
+
+select * from ps_location_tbl 
+
+
+select * from ps_proj_resource where project_id='010000000001379'
+select * from ps_CA_ACCTG_LN_PC where contract_num ='010000000001379'
+SELECT * FROM PS_PSA_RULES_HDR where project_id='010000000001379'
+Select * from ps_COMBO_CF_EDIT_REQUEST
+
+select distinct message_parm , message_parm2 , message_parm3 from ps_TSE_PC_LINE_FLD where tse_proc_instance = '75715';
+
+
+select * from ps_COMBO_DATA_TBL where COMBINATION='ACCTLOCATN' AND 
+CHARTFIELD1='USAIL034'
+
+select * from ps_COMBO_DATA_TBL where account in ('78300','42399')
+and COMBINATION='ACCTLOCATN' 
+
+select distinct contract_num,project_id,dst_use,account,deptid,operating_unit,product,class_fld, chartfield1,chartfield2,cust_id,analysis_type
+from ps_CA_ACCTG_LN_PC where account in ('78300','42399')
+
+
+select trans_dt, A.* from ps_proj_resource A where project_id='010000000001379'
+and analysis_type like 'E%'
+
+UPDATE ps_proj_resource SET ACCOUNT=' ', CHARTFIELD1=' ' where project_id='010000000001379'
+AND RESOURCE_ID='PC10000000330141' AND PROCESS_INSTANCE='76759'
+
+SELECT COUNT(*) FROM ps_proj_resource where project_id='010000000001379'
+
+
+select ACCOUNT,chartfield1, A.* from ps_proj_resource A 
+where project_id='010000000001379' and gl_distrib_status='C' 
+AND RESOURCE_ID='PC10000000330352'
+
+AND ANALYSIS_TYPE LIKE 'E%' 
+
+AND PROCESS_INSTANCE='76758'
+AND ACTIVITY_ID <> 'FIXEDFEE'
+
+
+SELECT COUNT(*) FROM ps_proj_resource where project_id='010000000001380'
+
+
+
+select * from ps_chartfield1_tbl where chartfield1='USAIL034'
+
+SELECT * FROM ps_CA_ACCTG_LN_PC WHERE PROJECT_ID='010000000001379'
+AND RESOURCE_ID='PC10000000330352'
+
+select DISTINCT EMPLID from ps_proj_resource A 
+where project_id='010000000001379' 
+
+select DISTINCT EMPLID from ps_proj_resource A 
+where project_id='010000000001380' 
+
+select DISTINCT EMPLID from ps_proj_resource A 
+where project_id='010000000001401' 
+
+SELECT project_id,dst_use,resource_id,foreign_amount,amount,chartfield1 FROM ps_CA_ACCTG_LN_PC WHERE PROJECT_ID='010000000001379'
+
+
+select ANALYSIS_TYPE,CHARTFIELD1,CHARTFIELD1,EMPLID, A.*  from PS_PROJ_RESOURCE A  WHERE PROJECT_ID='010000000001379'
+ ORDER BY RESOURCE_ID
+
+
+select analysis_type,a.*   FROM ps_CA_ACCTG_LN_PC a WHERE PROJECT_ID='010000000001379'
+
+
+select ANALYSIS_TYPE,CHARTFIELD1,CHARTFIELD2,EMPLID, A.*  from PS_PROJ_RESOURCE A  WHERE PROJECT_ID='010000000001426'
+ ORDER BY RESOURCE_ID
+ 
+ 
+ select ANALYSIS_TYPE,CHARTFIELD1,CHARTFIELD2,EMPLID, A.*  from PS_PROJ_RESOURCE A  WHERE PROJECT_ID='010000000001424'
+ ORDER BY RESOURCE_ID
+ 
+select  analysis_type,a.*   FROM ps_CA_ACCTG_LN_PC a WHERE PROJECT_ID='010000000001424'
+and analysis_type like 'E%'
+
+
+=============================================================================================================================================
+
+
+
+
+
+
+select * from ps_CA_ACCTG_LN_PC
+
+select contract_num,project_id,dst_use,account,deptid,operating_unit,product,class_fld, chartfield1,chartfield2,cust_id,analysis_type
+from ps_CA_ACCTG_LN_PC where analysis_type like 'E%'
+
+
+select distinct contract_num,project_id,dst_use,account,deptid,operating_unit,product,class_fld, chartfield1,chartfield2,cust_id,analysis_type
+from ps_CA_ACCTG_LN_PC where account='78300' and deptid='306030'
+
+select distinct message_parm , message_parm2 , message_parm3 from ps_TSE_PC_LINE_FLD where tse_proc_instance = '76045';
+
+
+
+==============================================================================================================================================
+
+select * from PS_PSA_RULES_LN
+
+select * from PS_PSA_RULES_HDR
+
+SELECT 
+A.PROJECT_ID,
+A.PROJECT_TYPE,
+A.RESOURCE_SUB_CAT,
+B.DST_USE,
+B.ACCOUNT,
+B.DEPTID,
+B.OPERATING_UNIT,
+B.PRODUCT,
+B.CLASS_FLD,
+B.CHARTFIELD1,
+B.CHARTFIELD2
+
+FROM 
+PS_PSA_RULES_HDR A,
+PS_PSA_RULES_LN B
+
+WHERE
+A.CRIT_SEQ=B.CRIT_SEQ
+AND A.PROJECT_ID='010000000001379'
+AND B.ACCOUNT='78300'
+AND B.CHARTFIELD1='USATN006'
+
+select 
+B.DST_USE,
+B.ACCOUNT,
+B.DEPTID,
+B.OPERATING_UNIT,
+B.PRODUCT,
+B.CLASS_FLD,
+B.CHARTFIELD1,
+B.CHARTFIELD2
+
+From 
+PS_PSA_RULES_LN B
+where 
+ACCOUNT='78300'
+AND DEPTID='306030'
+AND OPERATING_UNIT='03000'
+AND PRODUCT='250300'
+AND B.CHARTFIELD1='USATN006'
+AND CLASS_FLD='20020'
+
+
+=======================================================================================================================================================
+
+
+Update PS_PSA_RULES_LN LN set LN.chartfield2 = '0000006'  where LN.business_unit = 'PC001'  AND LN.dst_use = 'EX' and exists (select 'X' from 
+PS_PSA_RULES_HDR RH , PS_PSA_RULES_LVL LVL where  RH.BUSINESS_UNIT = LVL.BUSINESS_UNIT 
+   AND RH.CRIT_SEQ = LVL.CRIT_SEQ 
+   AND LVL.BUSINESS_UNIT = LN.BUSINESS_UNIT 
+   AND LVL.CRIT_SEQ = LN.CRIT_SEQ 
+   AND LVL.INTER_ORG_LEVEL = LN.INTER_ORG_LEVEL 
+  AND RH.project_id ='010000000001379'
+  AND RH.PROJECT_TYPE = 'INTER' )
+  
+  
+SELECT 
+* 
+FROM 
+PS_PSA_RULES_LN A,
+PS_PSA_RULES_HDR B 
+
+WHERE 
+B. project_id ='010000000001379'
+AND B.CRIT_SEQ = A.CRIT_SEQ 
+and a.dst_use = 'EX'
+
+
+===========================================================================================================================================================
+
+
+select Project_ID,PROJECT_TYPE from PS_PROJECT where PROJECT_ID in 
+( select PROJECT_ID from PS_OPT_PRJ_CRS_REF  where  OPT_PRJ_CRS_REFID in
+('39247',
+'56606',
+'61065',
+'66720',
+'65725',
+'65722',
+'65724',
+'65729',
+'67552',
+'67553',
+'67554',
+'67555',
+'67556',
+'66780',
+'66713',
+'70124',
+'70659',
+'71755',
+'72403'));
+
+
+
+
+
