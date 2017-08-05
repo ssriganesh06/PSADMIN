@@ -1,0 +1,29 @@
+-- AR001
+DELETE FROM PS_AR_AUD_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_AR_AUD_PND_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_CUST_DATA where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_DMS_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_ITEM_ACTIVITY where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_ITEM_DST where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_ITEM_MEMO_CHGS where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_OPT_AR_ITEM_TBL where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_PENDING_DST where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_PENDING_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_WS_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_PENDING_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_WS_ITEM where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_OPT_AR_GP_EXTI where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_OPT_AR_GP_MASTwhere business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_OPT_AR_GP_TRAN where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+DELETE FROM PS_OPT_AR_GP_UID where business_UNIT ='AR002' and ITEM in (select distinct Invoice FROM PS_BI_HDR WHERE BILL_SOURCE_ID in ('OIC','STEPWISE'));
+
+
+-- AR001(1 ROW)
+UPDATE PS_CUST_DATA SET BAL_AMT = '-80.00'
+WHERE BUSINESS_UNIT = 'AR001' AND CUST_ID = '0000000313' ;
+
+-- AR001(1 ROW)
+UPDATE PS_CUST_DATA SET BAL_AMT = '50686.91'
+WHERE BUSINESS_UNIT = 'AR001' AND CUST_ID = '0000000836' ;

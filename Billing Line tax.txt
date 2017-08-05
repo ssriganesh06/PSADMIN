@@ -1,0 +1,2 @@
+select * from ps_BI_LINE_TAX_DTL where invoice='0001000797'
+select * from ps_BI_LINE_TAX_DTL where invoice='0001054032'
