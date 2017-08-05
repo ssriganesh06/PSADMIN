@@ -1,0 +1,28 @@
+select * from PS_OPT_DC_SG_GCUST
+delete from PS_OPT_DC_SG_GCUST
+
+SELECT * FROM PS_OPT_DC_SG_GCUST WHERE POSTAL IN ('49503','29615','29615')
+
+--DELETE FROM PS_OPT_DC_SG_GCUST WHERE POSTAL IN ('49503','29615','29615')
+
+SELECT * FROM PS_OPT_GCUST_SG_LG
+
+--delete from PS_OPT_GCUST_SG_LG
+
+select * from ps_OPT_GCST_LD_ERR
+
+select * from PS_CUST_ADDRESS where CUST_ID in
+(
+'0000002109'
+,'0000001840'
+)
+
+select * from PS_OPT_CUST_CRSREF
+where REFERENCE_NUM in
+(
+'7000'
+,'7001'
+)
+
+
+select * from PS_OPT_GCST_LD_ERR;

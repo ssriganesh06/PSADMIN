@@ -1,0 +1,17 @@
+UPDATE PS_INTFC_PROJ_RES
+   SET COMBO_STATUS = 'e'
+ WHERE     BUSINESS_UNIT_GL = 'GL001'
+       AND PROCESS_INSTANCE = 402156
+       AND COMBO_STATUS = 'V'
+       AND EXISTS
+              (SELECT /*+ index(ps_combo_data_tbl psBcombo_data_tbl) */
+                      'X'
+                 FROM PS_COMBO_DATA_TBL
+                WHERE     SETID = 'OPTUM'
+                      AND PROCESS_GROUP = 'OPT_DEPT'
+                      AND COMBINATION = 'OPT_DEPT'
+                      AND VALID_CODE = 'V'
+                      AND PS_INTFC_PROJ_RES.ACCOUNTING_DT BETWEEN EFFDT_FROM
+                                                              AND EFFDT_TO
+                      AND PS_INTFC_PROJ_RES.OPERATING_UNIT = OPERATING_UNIT
+                      AND PS_INTFC_PROJ_RES.DEPTID = DEPTID)

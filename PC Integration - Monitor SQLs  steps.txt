@@ -1,0 +1,76 @@
+/* Process monitor SQL for PC Loads */
+select * from psprcsrqst where runcntlid like 'OPT%LOAD' and rundttm>=trunc(sysdate) order by rundttm desc;
+
+/* Simultaneously, /q2cbatch/psqpr01/inbound/pc on apsrp0689 can be checked for incoming data and trigger files. */
+
+/* RESOURCE Load: (TWS job stream: PSDLYTRG10) Run control: OPT_RESOURCE_LOAD */
+--Check count of resources loaded in PS ERP for current run - OPT_PC_INTFC
+
+select  * from ps_opt_pc_emp_tmp where process_instance=(select max(process_instance) from ps_opt_pc_emp_tmp); -- to match with Q2C_RESOURCE_OA.xml
+
+/* If above SQL count does not match with that of input file: Q2C_RESOURCE_OA.xml, navigate to /psoft/qc91/psqpr01/appserv/prcs/ on apsrp0689 and check the log file: OPT_PC_INTFC.txt. This holds all data issues encountered while loading resource data. Send the contents of this log file to Shawn N */
+
+
+
+/* Project Load: (TWSjob stream: DLYTRG11) Run control: OPT_PROJECT_LOAD */
+-- Interface table count after OPT_PC_INTFC app engine runs
+select count(*) from ps_intfc_proj_gen where intfc_id=(select max(intfc_id) from ps_intfc_proj_gen); -- to match with Q2C_PROJECT_OA.xml
+
+--Interface table count should be zero after PC_INTF_GEN app engine runs
+select count(*) from ps_intfc_proj_gen where intfc_id=(select max(intfc_id) from ps_intfc_proj_gen);
+
+-- If Interface table count remains same with Load and Intfc status = DON, then check for the error reason field. Inform Shawn N and Shan K of the errors {Applies to all the below}
+
+/* Activity Load: (TWSjob stream: DLYTRG12) Run control: OPT_ACTIVITY_LOAD */
+-- Interface table count after OPT_PC_INTFC app engine runs
+select count(*) from ps_intfc_act_gen where intfc_id=(select max(intfc_id) from ps_intfc_act_gen); -- to match with Q2C_ACTIVITY_OA.xml
+
+--Interface table count should be zero after PC_INTF_GEN app engine runs
+select count(*) from ps_intfc_act_gen where intfc_id=(select max(intfc_id) from ps_intfc_act_gen);
+
+
+/* Activity Resource/Team Load: (TWSjob stream: DLYTRG13) Run control: OPT_TEAM_LOAD */
+-- Interface table count after OPT_PC_INTFC app engine runs
+select count(*) from ps_intfc_team_gen where intfc_id=(select max(intfc_id) from ps_intfc_team_gen); -- to match with Q2C_TEAM_OA.xml
+
+--Interface table count should be zero after PC_INTF_GEN app engine runs
+select count(*) from ps_intfc_team_gen where intfc_id=(select max(intfc_id) from ps_intfc_team_gen);
+
+/* Timesheet Load: (TWSjob stream: DLYTRG14) Run control: OPT_TRANSACTION_LOAD */
+-- Interface table count after OPT_PC_INTFC app engine runs
+select count(*) from ps_intfc_proj_res where analysis_type='TLX' and journal_date=trunc(sysdate); -- to match with Q2C_TRANSACTION_OA.xml - first file from ETL
+
+--Interface table count should be zero after PC_INTFEDIT app engine runs
+select count(*) from ps_intfc_proj_res where analysis_type='TLX' and journal_date=trunc(sysdate); -- zero
+--PROJ_RESOURCE for TLX must have the Interface count
+select count(*) from ps_proj_resource where analysis_type='TLX' and journal_date=trunc(sysdate);
+
+/* 
+If this is in error, check the Message Set Nbr and Message Nbr. If it is 13120/2002, use the below SQL to update the project processing status (PROJECT.EFF_STATUS) as Active and reset Interface rows status to NEW. To be done until ETL deploys code fix for this. If any other error, need to find root cause and then determine if SQL update can be done or next Interface load would fix it
+-- 1 row affected
+update ps_project set eff_status='A' where project_id='XXXXXX' and eff_status='P';
+-- 10 rows affected */
+update ps_intfc_proj_res set pc_intfc_status='NEW',PC_LOAD_STATUS='NEW' where analysis_type='TLX' and pc_intfc_status='ERR';
+These steps are APPLICABLE to FORECAST and EXPENSE transactions also
+*/
+
+/* Forecast Load: (TWSjob stream: DLYTRG14) Run control: OPT_TRANSACTION_LOAD */
+-- Interface table count after OPT_PC_INTFC app engine runs
+select count(*) from ps_intfc_proj_res where analysis_type='FTC' and journal_date=trunc(sysdate); -- to match with Q2C_TRANSACTION_OA.xml - second file from ETL
+
+--Interface table count should be zero after PC_INTFEDIT app engine runs
+select count(*) from ps_intfc_proj_res where analysis_type='FTC' and journal_date=trunc(sysdate); -- zero
+--PROJ_RESOURCE for FTC must have the Interface count
+select count(*) from ps_proj_resource where analysis_type='FTC' and journal_date=trunc(sysdate);
+
+/* Expense Load: (TWSjob stream: DLYTRG14) Run control: OPT_TRANSACTION_LOAD */
+-- Interface table count after OPT_PC_INTFC app engine runs
+select count(*) from ps_intfc_proj_res where analysis_type='ACT' and journal_date=trunc(sysdate); -- to match with Q2C_TRANSACTION_OA.xml - last file from ETL
+
+--Interface table count should be zero after PC_INTFEDIT app engine runs
+select count(*) from ps_intfc_proj_res where analysis_type='ACT' and journal_date=trunc(sysdate); -- zero
+--PROJ_RESOURCE for FTC must have the Interface count
+select count(*) from ps_proj_resource where analysis_type='ACT' and journal_date=trunc(sysdate);
+
+
+/* If any process goes to no success posted=> TWS job gets abended. An ITG request to cancel the abended job alone has to be submitted and approved so that next subsequent jobs in the jobstreams get triggered. Analyze the issue for process abend from Process Monitor. Ensure to delete the no success/posted instance from process monitor before the next run */

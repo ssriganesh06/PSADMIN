@@ -1,0 +1,2 @@
+select * from dba_sql_profiles where name = 'coe_gnpfkja7mp2h3_1262209041'
+select * from gv$sql where sql_id = '7vvj8vvrsmbwa'

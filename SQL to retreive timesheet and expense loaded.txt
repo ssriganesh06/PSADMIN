@@ -1,0 +1,31 @@
+select A.business_unit as "Business Unit" , A.project_id as "PeopleSoft Project Id" ,C.opt_source_sys_id as "Source System Id", C.OPT_PRJ_CRS_REFID as "Project Cross 
+Ref ID",B.DESCR as "Project DESCR",L.DESCR as "Descr",C.ACTIVITY_ID as "Peoplesoft Activity Id",C.OPT_ACT_CRS_REFID as "Activity Cross Reference ID" , 
+A.resource_id as "Trans ID" , A.ANALYSIS_TYPE , A.RESOURCE_TYPE , A.RESOURCE_CATEGORY,A.RESOURCE_SUB_CAT ,A.EMPLID as "PeopleSoft Employee Id", M.Name as "Employee 
+Name",A.RES_USER4 as "Billing Rule Id",
+A.RESOURCE_QUANTITY ,A.RESOURCE_amount ,A.FOREIGN_CURRENCY as "Currency CD" , A.FOREIGN_AMOUNT as "Foreign Amount",A.TIME_SHEET_ID , A.SHEET_ID ,TO_CHAR
+(A.dttm_stamp,'MM/DD/YYYY HH24:MI') as "dttm_stamp" , B.PC_SCH_FIELD7 as "Node", 
+to_char(A.TRANS_DT, 'mm/dd/yyyy') as "Transaction Date",to_char(A.ACCOUNTING_DT, 'mm/dd/yyyy') as "Accounting Date",A.BI_DISTRIB_STATUS , A.GL_DISTRIB_STATUS from 
+ps_proj_resource A , 
+ps_project B , PS_OPT_ACT_CRS_REF C,ps_project_status K , ps_proj_status_tbl L,ps_personal_data M   where A.BUSINESS_UNIT = B.BUSINESS_UNIT  
+AND A.PROJECT_ID = B.PROJECT_ID AND A.BUSINESS_UNIT = C.BUSINESS_UNIT AND A.PROJECT_ID = C.PROJECT_ID AND A.ACTIVITY_ID = C.ACTIVITY_ID 
+AND A.BUSINESS_UNIT = K.BUSINESS_UNIT AND A.PROJECT_ID = K.PROJECT_ID AND A.EMPLID = M.EMPLID and  A.business_unit = 'PC001' and upper(B.PC_SCH_FIELD7)  
+in  (upper('HCD-AI-CIC'),upper('PG-AI-PCM'),upper('PG-AI-TS'),upper('HCD-AI-NTW'))
+AND ( K.EFFDT = 
+        (SELECT MAX(A_ED.EFFDT) FROM PS_PROJECT_STATUS A_ED 
+        WHERE K.BUSINESS_UNIT = A_ED.BUSINESS_UNIT 
+          AND K.PROJECT_ID = A_ED.PROJECT_ID 
+          AND A_ED.EFFDT <= SYSDATE) 
+    AND K.EFFSEQ = 
+        (SELECT MAX(A_ES.EFFSEQ) FROM PS_PROJECT_STATUS A_ES 
+        WHERE K.BUSINESS_UNIT = A_ES.BUSINESS_UNIT 
+          AND K.PROJECT_ID = A_ES.PROJECT_ID 
+          AND K.EFFDT = A_ES.EFFDT) 
+      AND L.SETID = 'OPTUM'
+     AND L.PROJECT_STATUS = K.PROJECT_STATUS 
+     AND L.EFFDT = 
+        (SELECT MAX(B_ED.EFFDT) FROM PS_PROJ_STATUS_TBL B_ED 
+        WHERE L.SETID = B_ED.SETID 
+          AND L.PROJECT_STATUS = B_ED.PROJECT_STATUS 
+          AND B_ED.EFFDT <= SYSDATE) )
+          
+          Order by A.business_unit , A.project_id

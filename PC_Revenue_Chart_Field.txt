@@ -1,0 +1,135 @@
+Combo error table to identify the dept and combo error
+
+select distinct message_parm , message_parm2 , message_parm3 from ps_TSE_PC_LINE_FLD where tse_proc_instance = '402156';
+
+
+=================================================================================================================================
+For COMMP Projects loaded as part of Iteration 1: We shouldn’t get Revenue chartfields missing for COMMP projects for Iteration 1
+
+SELECT P.PROJECT_ID, c.deptid,
+  c.class_fld,
+  c.chartfield1,
+  c.product,
+  c.operating_unit
+FROM PS_PSA_RULES_HDR A,
+  PS_PSA_RULES_LVL B,
+  PS_PSA_RULES_LN C,
+  PS_PROJECT P
+WHERE A.BUSINESS_UNIT = 'PC001'
+AND A.BUSINESS_UNIT   =B.BUSINESS_UNIT
+AND A.CRIT_SEQ        =B.CRIT_SEQ
+AND B.BUSINESS_UNIT   = C.BUSINESS_UNIT
+AND B.CRIT_SEQ        = C.CRIT_SEQ
+AND B.INTER_ORG_LEVEL = C.INTER_ORG_LEVEL
+AND C.DST_USE         ='REV'
+AND A.PROJECT_ID=P.PROJECT_ID
+AND P.PROJECT_TYPE = 'COMMP'
+AND P.PROJECT_ID BETWEEN '010000000008770' and '010000000009819'
+
+AND ( c.deptid = ' ' OR
+  c.class_fld = ' ' OR
+  c.chartfield1= ' ' OR
+  c.product= ' ' OR
+  c.operating_unit= ' ' )
+
+
+=============================================================================================================================================
+
+SELECT PRJ_LEVEL5_CF_VAL
+FROM PS_PSA_ORGPRJ_DEFN A
+WHERE BUSINESS_UNIT = 'PC001'
+AND PROJECT_ID      = 'CONSULTING'
+AND EFFDT           =
+  (SELECT MAX(effdt)
+  FROM PS_PSA_ORGPRJ_DEFN B
+  WHERE A.BUSINESS_UNIT=B.BUSINESS_UNIT
+  AND A.PROJECT_ID     =B.PROJECT_ID
+  AND B.EFFDT         <=SYSDATE
+  )
+;
+
+================================================================================================================================================
+
+I checked for all the non-COMMP projects and Product Chartfield value in Proj Organization is blank for all the non-COMMP projects loaded as part of Iteration 1. So I think the all EMPLIDs used in the transactions must have all the 5 ChartFields in the PS_OPT_EMPL_ACC_CF table.
+
+SELECT DISTINCT PRJ_LEVEL5_CF_VAL
+FROM PS_PSA_ORGPRJ_DEFN A , PS_PROJECT P
+WHERE A.BUSINESS_UNIT = 'PC001'
+AND A.PROJECT_ID = P.PROJECT_ID
+AND P.PROJECT_TYPE <> 'COMMP'
+AND P.PROJECT_ID BETWEEN '010000000008770' and '010000000009819'
+AND A.EFFDT           =
+  (SELECT MAX(effdt)
+  FROM PS_PSA_ORGPRJ_DEFN B
+  WHERE A.BUSINESS_UNIT=B.BUSINESS_UNIT
+  AND A.PROJECT_ID     =B.PROJECT_ID
+  AND B.EFFDT         <= SYSDATE
+  )
+;
+
+=================================================================================================================================================
+If the Project Type is COMMP. The ChartFields are going to be loaded from below SQL.
+
+SELECT c.deptid,c.class_fld,c.chartfield1,c.product,c.operating_unit,c.account, c.chartfield2, c.fund_code FROM PS_PSA_RULES_HDR A, PS_PSA_RULES_LVL B, PS_PSA_RULES_LN C WHERE A.BUSINESS_UNIT=:1 AND A.PROJECT_ID=:2 AND A.BUSINESS_UNIT=B.BUSINESS_UNIT AND A.CRIT_SEQ=B.CRIT_SEQ AND B.BUSINESS_UNIT = C.BUSINESS_UNIT AND B.CRIT_SEQ = C.CRIT_SEQ AND B.INTER_ORG_LEVEL = C.INTER_ORG_LEVEL AND C.DST_USE='REV'
+
+
+
+If Project Type <> COMMP
+
+1.CLASS_FLD , DEPTID, OPERATING_UNIT, CHARTFIELD1, PRODUCT will come from PS_OPT_EMPL_ACC_CF table for the Resource
+2.If PRODUCT ChartField value is present in PS_PSA_ORGPRJ_DEFN table, then this value would overwrite PRODUCT chartfield value from the EMPLID (step1).
+
+SELECT PRJ_LEVEL5_CF_VAL FROM PS_PSA_ORGPRJ_DEFN A WHERE BUSINESS_UNIT = :1 AND PROJECT_ID = :2 
+AND EFFDT=(select max(effdt) from PS_PSA_ORGPRJ_DEFN B where A.BUSINESS_UNIT=B.BUSINESS_UNIT and A.PROJECT_ID=B.PROJECT_ID and B.EFFDT<=SYSDATE)
+
+If PRODUCT is blank from PS_OPT_EMPL_ACC_CF table  (step 1) and Proj Organization (Steps2),  then the system would try to get this value from Parent Tree Node, in this case CONSULTING
+
+SELECT PRJ_LEVEL5_CF_VAL
+FROM PS_PSA_ORGPRJ_DEFN A
+WHERE BUSINESS_UNIT = 'PC001'
+AND PROJECT_ID      = 'CONSULTING'
+AND EFFDT           =
+  (SELECT MAX(effdt)
+  FROM PS_PSA_ORGPRJ_DEFN B
+  WHERE A.BUSINESS_UNIT=B.BUSINESS_UNIT
+  AND A.PROJECT_ID     =B.PROJECT_ID
+  AND B.EFFDT         <=SYSDATE
+  )
+
+
+
+===================================================================================================================================================
+  SELECT  a.ANALYSIS_TYPE , A.PROJECT_ID  ,A.PROJECT_TYPE ,A.RESOURCE_TYPE ,  A.DESCR , A.ACTIVE_STATUS , A.DST_USE,A.BUSINESS_UNIT_BI , A.ACCOUNT as "ACCOUNT", A.DEPTID as "Department"
+   ,  A.ORG_TO_BOOK as "Organization to Book" , A.OPERATING_UNIT as "Operating Unit", A.PRODUCT as "Product", A.FUND_CODE as "Project GL", A.CLASS_FLD as "Business Unit GL", A.AFFILIATE_INTRA1 as "GL_BU Affiliate", A.CHARTFIELD1 as "Location",A.CHARTFIELD2 as "Customer",  A.CHARTFIELD3 as 
+"ReInsurance Indicator",B.DST_USE,B.BUSINESS_UNIT_BI , B.ACCOUNT as "ACCOUNT_REV", B.DEPTID as "Department_REV"
+   ,  B.ORG_TO_BOOK as "Organization to Book_REV" , B.OPERATING_UNIT as "Operating Unit_REV", B.PRODUCT as "Product_REV", B.FUND_CODE as "Project GL_REV", B.CLASS_FLD as "Business Unit GL_REV", B.AFFILIATE_INTRA1 as "GL_BU Affiliate_REV", B.CHARTFIELD1 as "Location_REV",B.CHARTFIELD2 as "Customer_REV",  B.CHARTFIELD3 as 
+"ReInsurance Indicator_REV"
+  from 
+ (  select RH.BUSINESS_UNIT ,RH.CRIT_SEQ,LN.INTER_ORG_LEVEL ,RH.ANALYSIS_TYPE , RH.PROJECT_ID , RH.BUSINESS_UNIT_GL ,RH.PROJECT_TYPE ,RH.RESOURCE_TYPE , RH.RESOURCE_SUB_CAT , RH.DESCR , RH.ACTIVE_STATUS , LN.DST_USE,LN.BUSINESS_UNIT_BI , LN.ACCOUNT , LN.DEPTID
+  , LN.STATISTICS_CODE , LN.ORG_TO_BOOK , LN.OPERATING_UNIT , LN.PRODUCT , LN.FUND_CODE , LN.CLASS_FLD , LN.AFFILIATE_INTRA1 , LN.CHARTFIELD1 ,LN.CHARTFIELD2 ,  LN.CHARTFIELD3 from  PS_PSA_RULES_HDR RH ,  PS_PSA_RULES_LVL LVL ,  PS_PSA_RULES_LN LN where   RH.BUSINESS_UNIT = LVL.BUSINESS_UNIT 
+   AND RH.CRIT_SEQ = LVL.CRIT_SEQ 
+   AND LVL.BUSINESS_UNIT = LN.BUSINESS_UNIT 
+   AND LVL.CRIT_SEQ = LN.CRIT_SEQ 
+   AND LVL.INTER_ORG_LEVEL = LN.INTER_ORG_LEVEL 
+   AND RH.project_type = 'COMMP'
+   AND RH.PROJECT_ID <> '%'
+   AND LN.DST_USE = 'UAR'
+   AND RH.ANALYSIS_GROUP <> 'PSREV'
+   AND RH.RESOURCE_TYPE IN ('FIXED','LABOR','EXPEN') and RH.PROJECT_ID BETWEEN '010000000008770' and '010000000009819') A,
+   
+   (  select RH.BUSINESS_UNIT ,RH.CRIT_SEQ,LN.INTER_ORG_LEVEL ,RH.ANALYSIS_TYPE , RH.PROJECT_ID , RH.BUSINESS_UNIT_GL ,RH.PROJECT_TYPE ,RH.RESOURCE_TYPE  , RH.DESCR , RH.ACTIVE_STATUS , LN.DST_USE,LN.BUSINESS_UNIT_BI , LN.ACCOUNT , LN.DEPTID
+   , LN.STATISTICS_CODE , LN.ORG_TO_BOOK , LN.OPERATING_UNIT , LN.PRODUCT , LN.FUND_CODE , LN.CLASS_FLD , LN.AFFILIATE_INTRA1 , LN.CHARTFIELD1 ,LN.CHARTFIELD2 ,  LN.CHARTFIELD3 from  PS_PSA_RULES_HDR RH ,  PS_PSA_RULES_LVL LVL ,  PS_PSA_RULES_LN LN where   RH.BUSINESS_UNIT = LVL.BUSINESS_UNIT 
+   AND RH.CRIT_SEQ = LVL.CRIT_SEQ 
+   AND LVL.BUSINESS_UNIT = LN.BUSINESS_UNIT 
+   AND LVL.CRIT_SEQ = LN.CRIT_SEQ 
+   AND LVL.INTER_ORG_LEVEL = LN.INTER_ORG_LEVEL 
+   AND RH.project_type = 'COMMP'
+   AND RH.PROJECT_ID <> '%'
+   AND LN.DST_USE = 'REV'
+   AND RH.ANALYSIS_GROUP <> 'PSREV'
+   AND RH.RESOURCE_TYPE IN ('FIXED','LABOR','EXPEN') and RH.PROJECT_ID BETWEEN '010000000008770' and '010000000009819') B
+   where A.BUSINESS_UNIT = B.BUSINESS_UNIT 
+   AND A.CRIT_SEQ = B.CRIT_SEQ 
+   AND A.INTER_ORG_LEVEL = B.INTER_ORG_LEVEL 
+
+      order by project_id

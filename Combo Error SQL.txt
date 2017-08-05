@@ -1,0 +1,34 @@
+select distinct message_parm , message_parm2 , message_parm3 from ps_TSE_PC_LINE_FLD where tse_proc_instance = '75715';
+
+
+select * from ps_COMBO_DATA_TBL where COMBINATION='ACCTLOCATN' AND 
+CHARTFIELD1='USAIL034'
+
+select trans_dt, A.* from ps_proj_resource A where project_id='010000000001379'
+and analysis_type like 'E%'
+
+select ACCOUNT,chartfield1, A.* from ps_proj_resource A 
+where project_id='010000000001379' and gl_distrib_status='C' 
+AND RESOURCE_ID='PC10000000330352'
+
+select * from ps_chartfield1_tbl where chartfield1='USAIL034'
+
+SELECT * FROM ps_CA_ACCTG_LN_PC WHERE PROJECT_ID='010000000001379'
+AND RESOURCE_ID='PC10000000330352'
+
+select DISTINCT EMPLID from ps_proj_resource A 
+where project_id='010000000001379' 
+
+select DISTINCT EMPLID from ps_proj_resource A 
+where project_id='010000000001380' 
+
+select DISTINCT EMPLID from ps_proj_resource A 
+where project_id='010000000001401' 
+
+SELECT project_id,dst_use,resource_id,foreign_amount,amount,chartfield1 FROM ps_CA_ACCTG_LN_PC WHERE PROJECT_ID='010000000001379'
+
+
+select count(*) from ps_gl_account_tbl
+
+
+select * from ps_chartfield1_tbl where chartfield1='USASS800'

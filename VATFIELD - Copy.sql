@@ -1,0 +1,157 @@
+SELECT DISTINCT PRJ_LEVEL5_CF_VAL
+FROM PS_PSA_ORGPRJ_DEFN A , PS_PROJECT P
+WHERE A.BUSINESS_UNIT = 'PC001'
+AND A.PROJECT_ID = P.PROJECT_ID
+AND P.PROJECT_TYPE <> 'COMMP'
+AND P.PROJECT_ID BETWEEN '010000000008770' and '010000000009819'
+AND A.EFFDT           =
+  (SELECT MAX(effdt)
+  FROM PS_PSA_ORGPRJ_DEFN B
+  WHERE A.BUSINESS_UNIT=B.BUSINESS_UNIT
+  AND A.PROJECT_ID     =B.PROJECT_ID
+  AND B.EFFDT         <= SYSDATE
+  )
+;
+
+SELECT
+A.PROJECT_ID, 
+c.deptid,
+       c.class_fld,
+       c.chartfield1,
+       c.product,
+       c.operating_unit,
+       c.account,
+       c.chartfield2,
+       c.fund_code
+  FROM PS_PSA_RULES_HDR A, PS_PSA_RULES_LVL B, PS_PSA_RULES_LN C, PS_PROJECT D
+ WHERE     A.BUSINESS_UNIT = 'PC001'
+       AND A.PROJECT_ID BETWEEN '010000000008770' and '010000000009819'
+       AND A.BUSINESS_UNIT = B.BUSINESS_UNIT
+       AND A.CRIT_SEQ = B.CRIT_SEQ
+       AND B.BUSINESS_UNIT = C.BUSINESS_UNIT
+       AND B.CRIT_SEQ = C.CRIT_SEQ
+       AND B.INTER_ORG_LEVEL = C.INTER_ORG_LEVEL
+       AND C.DST_USE = 'REV'
+       AND D.PROJECT_TYPE ='COMMP'
+       AND A.PROJECT_ID=D.PROJECT_ID
+
+
+SELECT 
+A.PROJECT_ID,
+B.OPT_PRJ_CRS_REFID,
+C.ANALYSIS_TYPE,
+C.PROJECT_TYPE
+
+
+FROM
+PS_PROJECT A,
+PS_OPT_PRJ_CRS_REF B,
+PS_PSA_RULES_HDR C
+
+WHERE 
+A.PROJECT_ID=B.PROJECT_ID
+AND B.PROJECT_ID=C.PROJECT_ID
+AND PROJECT_TYPE='INTER'
+and A.PROJECT_ID  BETWEEN '010000000008770' AND '010000000009819'
+AND A.PC_SCH_FIELD7='CONSULTING'
+
+SELECT * FROM PS_PROJECT WHERE PROJECT_ID='CONSULTING';
+
+SELECT * FROM PS_PSA_ORGPRJ_DEFN WHERE PROJECT_ID='CONSULTING';
+
+
+================================
+
+Accouting tables for BI & AR 
+SELECT * FROM PS_BI_HDR WHERE CONTRACT_NUM='CON000000002370'
+SELECT * FROM PS_ITEM_DST WHERE ITEM='0001032265'
+SELECT * FROM PS_BI_ACCT_ENTRY WHERE INVOICE='0001032265'
+
+
+
+
+
+
+SELECT * FROM PS_CA_CONTR_HDR  WHERE CONTRACT_NUM = 'CON000000002215'
+
+
+select * from PS_CA_DETAIL 
+
+
+select * from ps_customer where TRUNC(date_last_maint) > '3/23/2016'
+
+SELECT * FROM ps_customer WHERE TRUNC(date_last_maint) > TO_DATE('23/03/2016','DD/MM/YYYY')
+and LAST_MAINT_OPRID <>'OPT_CONV' order by cust_id asc
+
+SELECT * FROM PS_CONTACT WHERE TRUNC(date_last_maint) > TO_DATE('23/03/2016','DD/MM/YYYY')
+and LAST_MAINT_OPRID <>'OPT_CONV';
+
+select * from v$database
+
+select * from PS_CUSTOMER where cust_id ='0000007099'
+
+
+select * from PS_OPT_CUST_CRSREF where opt_source_sysid ='OISF'
+
+select contract_num,sold_to_cust_id,bill_to_cust_id from ps_ca_contr_hdr where sold_to_cust_id  in (
+'0000000947',
+'0000005095',
+'0000005766',
+'0000005459',
+'0000005462',
+'0000005458',
+'0000005461',
+'0000005463',
+'0000005767',
+'0000005769')
+
+
+select * from ps_ca_contr_hdr where sold_to_cust_id='0000005774'
+
+select invoice, bill_to_cust_id,contract_num,bill_status from ps_bi_hdr where contract_num in (
+'CON000000001253',
+'CON000000002787',
+'CON000000005489',
+'CON000000005490',
+'CON000000005496')
+
+select * from ps_bi_line where contract_num in (
+'CON000000001253',
+'CON000000002787',
+'CON000000005489',
+'CON000000005490',
+'CON000000005496')
+
+select * from ps_item where item in 
+('0001019785',
+'0001020948',
+'0001020948',
+'0001025568',
+'0001018482',
+'0001022269',
+'0001017402',
+'0001016203',
+'0001023548')
+
+
+select * from PS_OPT_PR_CREF_MST  WHERE PRODUCT_ID  between '000000000000000964' and '000000000000000996';
+
+select * from PS_OPT_PR_CREF_MST;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

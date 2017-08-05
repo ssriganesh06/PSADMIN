@@ -1,0 +1,123 @@
+SELECT BUSINESS_UNIT, contract_num,activity_id,emplid,resource_id,resource_id_from, PROJECT_ID,emplid,ACTIVITY_ID,ANALYSIS_TYPE,RESOURCE_TYPE,RESOURCE_QUANTITY,RESOURCE_AMOUNT,FOREIGN_AMOUNT,res_user4, 
+priced_rate,TRANS_DT,BI_DISTRIB_STATUS  FROM PS_PROJ_RESOURCE WHERE PROJECT_ID = '010000000002238'
+and res_user4='RID0001255' order by resource_id
+
+SELECT BUSINESS_UNIT, contract_num,activity_id,emplid,resource_id,resource_id_from PROJECT_ID,emplid,ACTIVITY_ID,ANALYSIS_TYPE,RESOURCE_TYPE,RESOURCE_QUANTITY,RESOURCE_AMOUNT,FOREIGN_AMOUNT,res_user4, 
+priced_rate,TRANS_DT,BI_DISTRIB_STATUS  FROM PS_PROJ_RESOURCE WHERE PROJECT_ID = '010000000002227'
+and res_user4='RID0001239'
+
+select * from ps_ca_acctg_ln_pc where contract_num='CON000000006337'
+
+select * from ps_proj_resource where project_id='010000000002220'
+
+select * from ps_project where project_type ='INTER'
+
+
+select * from ps_proj_resource where project_id='000000000000081' AND ACTIVITY_ID='EXPENSE'
+AND ANALYSIS_TYPE='ACT'
+
+SELECT * FROM  PS_OPT_PRJ_CRS_REF WHERE OPT_PRJ_CRS_REFID='70124'
+
+select project_id , activity_id , resource_amount, gl_distrib_status, bi_distrib_status , process_instance , accounting_dt , resource_id from ps_proj_resource where business_unit = 'PC001' 
+and project_id ='000000000000081'AND ACTIVITY_ID='EXPENSE'
+
+SELECT BUSINESS_UNIT, contract_num,resource_id,resource_id_from PROJECT_ID,emplid,ACTIVITY_ID,ANALYSIS_TYPE,RESOURCE_TYPE,RESOURCE_QUANTITY,RESOURCE_AMOUNT,FOREIGN_AMOUNT,res_user4, 
+priced_rate,TRANS_DT,BI_DISTRIB_STATUS  FROM PS_PROJ_RESOURCE WHERE PROJECT_ID = '000000000000081'
+AND ACTIVITY_ID='EXPENSE'
+
+
+
+select * from ps_proj_antype_tbl where analysis_type  LIKE 'E1%'
+
+
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E01' WHERE analysis_type = 'E1';
+
+
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E02' WHERE analysis_type = 'E2';
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E03' WHERE analysis_type = 'E3';
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E04' WHERE analysis_type = 'E4';
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E05' WHERE analysis_type = 'E5';
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E06' WHERE analysis_type = 'E6';
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E07' WHERE analysis_type = 'E7';
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E08' WHERE analysis_type = 'E8';
+UPDATE ps_proj_antype_tbl SET analysis_type = 'E09' WHERE analysis_type = 'E9';
+
+
+select * from ps_project where project_type ='INTER'
+
+select * from ps_project where project_id='010000000002227'
+
+SELECT * FROM PS_PROJ_ACTIVITY WHERE PROJECT_ID BETWEEN '010000000002226' AND '010000000002228';
+
+SELECT * FROM PS_PROJ_ACTIVITY WHERE PROJECT_ID = '010000000002227'
+
+
+SELECT BUSINESS_UNIT, contract_num,resource_id,resource_id_from PROJECT_ID,emplid,ACTIVITY_ID,ANALYSIS_TYPE,RESOURCE_TYPE,RESOURCE_QUANTITY,RESOURCE_AMOUNT,FOREIGN_AMOUNT,res_user4, 
+priced_rate,TRANS_DT,BI_DISTRIB_STATUS  FROM PS_PROJ_RESOURCE WHERE PROJECT_ID = '000000000000081'
+AND ACTIVITY_ID='EXPENSE'
+
+select * from PS_PSA_RULES_HDR where project_id='000000000000081'
+
+select * from PS_PSA_RULES_LN where project_id='000000000000081'
+
+
+delete from PS_PSA_RULES_HDR Where project_id='000000000000081' and analysis_type <> 'BIL'
+
+
+SELECT BUSINESS_UNIT, contract_num,resource_id,resource_id_from PROJECT_ID,emplid,ACTIVITY_ID,ANALYSIS_TYPE,RESOURCE_TYPE,RESOURCE_QUANTITY,RESOURCE_AMOUNT,FOREIGN_AMOUNT,res_user4, 
+priced_rate,TRANS_DT,BI_DISTRIB_STATUS  FROM PS_PROJ_RESOURCE WHERE PROJECT_ID = '000000000000081'
+AND ACTIVITY_ID='EXPENSE'
+
+SELECT * FROM PS_OPT_PRJ_CRS_REF WHERE PROJECT_ID='000000000000081' 
+
+UPDATE PS_OPT_PRJ_CRS_REF SET OPT_PRJ_CRS_REFID='54204A' WHERE PROJECT_ID='000000000000081' 
+
+SELECT BUSINESS_UNIT, contract_num,resource_id,resource_id_from,PROJECT_ID,emplid,ACTIVITY_ID,ANALYSIS_TYPE,RESOURCE_TYPE,RESOURCE_QUANTITY,RESOURCE_AMOUNT,FOREIGN_AMOUNT,res_user4, 
+priced_rate,TRANS_DT,BI_DISTRIB_STATUS  FROM PS_PROJ_RESOURCE WHERE PROJECT_ID = '010000000002113'
+AND ACTIVITY_ID='EXPENSE'
+
+SELECT * FROM PS_OPT_PRJ_CRS_REF WHERE PROJECT_ID='000000000000081' 
+
+UPDATE PS_OPT_PRJ_CRS_REF SET OPT_PRJ_CRS_REFID='54204A' WHERE PROJECT_ID='000000000000081' 
+
+select * from PSPROJECTDEFN where lastupdoprid='RGOLLA1'
+
+select * from PS_ALLOC_BASV_TBL
+
+select * from ps_PROJ_RES_CAL_VW WHERE PROJECT_ID = '010000000002113'
+
+
+
+
+===================================
+
+
+select limit_amount, adjusting_entry, OPT_PC_DO_NOT_BILL from ps_opt_pc_rule_hdr where opt_pc_rule_id='RID0001237'
+
+select a.opt_pc_rule_id from ps_opt_pc_rule_hdr a where a.project_id='010000000002227' and 
+a.rule_sequence>=(SELECT b.RULE_SEQUENCE FROM ps_opt_pc_rule_hdr b where B.OPT_PC_RULE_ID='RID0001237')
+
+
+select opt_pc_bil_rate_by from ps_opt_pc_rule_hdr where opt_pc_rule_id='RID0001237'
+
+select a.opt_pc_rule_id from ps_opt_pc_rule_hdr a where a.project_id= '010000000002227'
+and a.rule_sequence>=(SELECT b.RULE_SEQUENCE FROM ps_opt_pc_rule_hdr b where B.OPT_PC_RULE_ID='RID0001237') 
+and a.opt_pc_rule_type='T' and a.eff_status='A' order by a.rule_sequence
+
+
+select resource_quantity, to_Char(trans_dt,'MM'),to_Char(trans_dt,'YY'), to_Char(trans_dt,'DD'), 
+emplid from ps_proj_resource where project_id='010000000002227' and resource_id=:
+
+select opt_pc_limit_hrs, opt_pc_apply_rule, opt_pc_move_rule, spa_timerpt_period from
+ ps_opt_pc_rule_txn where project_id='010000000002227' and opt_pc_rule_id='RID0001237'
+ 
+ select * from ps_opt_pc_rule_txn
+ 
+ select sum(resource_quantity) from ps_proj_resource WHERE RES_USER4='RID0001237' AND ANALYSIS_TYPE='BIL' 
+ and emplid= '000414433' and to_char(trans_dt,'MM')= '28-OCT-16'
+  GROUP BY emplid,to_char(trans_dt,'MM')
+ 
+ select * from ps_proj_Resource where project_id='010000000002227'
+
+SELECT BUSINESS_UNIT, contract_num,resource_id,resource_id_from, PROJECT_ID,emplid,trans_dt,ACTIVITY_ID,ANALYSIS_TYPE,RESOURCE_TYPE,RESOURCE_QUANTITY,RESOURCE_AMOUNT,FOREIGN_AMOUNT,res_user4, 
+priced_rate,TRANS_DT,BI_DISTRIB_STATUS  FROM PS_PROJ_RESOURCE WHERE PROJECT_ID = '010000000002227'
